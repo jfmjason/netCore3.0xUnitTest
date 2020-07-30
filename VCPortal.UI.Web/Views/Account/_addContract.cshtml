@@ -1,0 +1,53 @@
+﻿@model VCPortal.UI.Web.DTO.AddContractDTO
+
+<div class="col-md-12">
+    <form id="frm-contract"  asp-action="addcontract" enctype="multipart/form-data" >
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="ContractNo" class="control-label col-form-label-sm"></label>
+                <input asp-for="ContractNo" class="form-control form-control-sm" />
+                <span asp-validation-for="ContractNo" class="text-danger"></span>
+            </div>
+            <div class="col-md-5">
+                <label asp-for="CardType" class="control-label col-form-label-sm"></label>
+                <input asp-for="CardType" class="form-control form-control-sm" />
+                <span asp-validation-for="CardType" class="text-danger"></span>
+            </div>
+            <div class="col-md-5">
+                <label asp-for="Scheme" class="control-label col-form-label-sm"></label>
+                <input asp-for="Scheme" class="form-control form-control-sm" />
+                <span asp-validation-for="Scheme" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="PolicyNo" class="control-label col-form-label-sm"></label>
+                <input asp-for="PolicyNo" class="form-control form-control-sm" />
+                <span asp-validation-for="PolicyNo" class="text-danger"></span>
+            </div>
+            <div class="col-md-5">
+                <label asp-for="Network" class="control-label col-form-label-sm"></label>
+                <input asp-for="Network" class="form-control form-control-sm" />
+                <span asp-validation-for="Network" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-5">
+                <label asp-for="ContractFormFile" class="control-label col-form-label-sm"></label>
+                <div class="custom-file">
+                    <input type="file" asp-for="ContractFormFile" class="custom-file-input form-control form-control-sm" id="ContractFormFile" accept="image/*, .xlsx, .xls, .csv">
+                    <label class="custom-file-label col-form-label-sm" for="customFile">Choose file</label>
+                </div>
+                <span asp-validation-for="ContractFormFile" class="text-danger"></span>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" value="Upload" class="btn btn-primary btn-sm" />
+            </div>
+        </div>
+    </form>
+</div>
+
+

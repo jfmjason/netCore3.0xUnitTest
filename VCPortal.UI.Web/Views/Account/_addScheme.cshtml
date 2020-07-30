@@ -1,0 +1,27 @@
+﻿@model VCPortal.UI.Web.DTO.AddSchemeDTO
+
+
+    <div class="col-md-5">
+        <form id="frm-addscheme" asp-action="AddScheme" enctype="multipart/form-data" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SchemeName" class="control-label col-form-label-sm"></label>
+                <input asp-for="SchemeName" class="form-control form-control-sm" placeholder="Enter scheme name" />
+                <span asp-validation-for="SchemeName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SchemeFormFile" class="control-label col-form-label-sm"></label>
+                <div class="custom-file">
+                    <input type="file" asp-for="SchemeFormFile" class="custom-file-input form-control form-control-sm" id="SchemeFormFile" accept="image/*, .xlsx, .xls, .csv">
+                    <label class="custom-file-label col-form-label-sm" for="customFile">Choose file</label>
+                </div>
+                <span asp-validation-for="SchemeFormFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Upload" class="btn btn-primary btn-sm" />
+            </div>
+        </form>
+    </div>
+
+

@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="container mt-3">
+    <h6>Virtual Card Template Upload</h6>
+    <br>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#byscheme-tab">By Scheme</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#bycontract-tab">By Contract</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#mebership-tab">Membership</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="byscheme-tab" class="container tab-pane active">
+            <br />
+            <partial name="_addScheme.cshtml" />
+            <hr />
+            <div class="col-md-12">
+                <table id="tbl-scheme" class="table w-auto small">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="bycontract-tab" class="container tab-pane fade">
+            <br />
+            <partial name="_addContract.cshtml" />
+            <hr />
+            <div class="col-md-12">
+                <table id="tbl-contract" class="table w-auto small">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="mebership-tab" class="container tab-pane fade">
+            <br>
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        var schemeDataTable;
+        var contractDataTable;
+
+        $(document).ready(function () {
+
+            schemeDataTable = $('#tbl-scheme').DataTable({
+                ajax: {
+                    url: "@Url.Action("GetSchemes")",
+                    dataSrc: function (data) {
+                        return JSON.parse(JSON.stringify(data));
+                    }
+                },
+                columns: [
+                    { title: "Id", data:"id" },
+                    { title: "Scheme name", data:"schemeName" },
+                    { title: "File path", data: "filePath"},
+                    { title: "Created by", data: "createdBy"},
+                    { title: "Modified by", data: "modifiedBy"},
+                    { title: "Modified date", data: "modifiedDate" },
+                    {
+                        title: "Is active", data: "isActive", class:"text-center", render: function (data) {
+                            if (data == true)
+                                return 'Yes';
+                            else {
+                                return 'No';
+                            }
+                        }
+                    }
+                ],
+                "order": [[0, "desc"]]
+            });
+
+            contractDataTable = $('#tbl-contract').DataTable({
+                ajax: {
+                    url: "@Url.Action("GetContracts")",
+                    dataSrc: function (data) {
+                        return JSON.parse(JSON.stringify(data));
+                    }
+                },
+                columns: [
+                    { title: "Id", data:"id" },
+                    { title: "Contract", data: "contractNo" },
+                    { title: "Scheme", data: "scheme" },
+                    { title: "Network", data: "network" },
+                    { title: "Policy No", data: "policyNo" },
+                    { title: "File Path", data: "filePath" },
+                    { title: "Created By", data: "createdBy" },
+                    { title: "Modified By", data: "modifiedBy" },
+                    { title: "Modified date", data: "modifiedDate" },
+                    {
+                        title: "Is active", data: "isActive", class:"text-center", render: function (data) {
+                            if (data == true)
+                                return 'Yes';
+                            else {
+                                return 'No';
+                            }
+                        }
+                    }
+                ],
+                "order": [[0, "desc"]]
+            });
+
+            $('#frm-addscheme').submit(function (event) {
+                event.preventDefault();
+
+                var form = $(this);
+
+                if (form.valid()) {
+
+                    var formData = new FormData(form[0]);
+                    var inputId = $(this).find('input[type = "file"]').prop('id');
+
+                    var files = document.getElementById(inputId).files;
+
+                    formData.append("file", files[0]);
+
+                    $.ajax({
+                        url: '@Url.Action("addscheme")',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        success: function (schemeid) {
+
+                            schemeDataTable.ajax.reload();
+
+                            $("#SchemeName").val("");
+                            $("#" + inputId).val("");
+                            $("#" + inputId).next(".custom-file-label")
+                                .html("Choose file");
+
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'File uploaded',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                toast:true
+                            })
+
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                }
+            });
+
+            $('#frm-contract').submit(function (event) {
+                event.preventDefault();
+
+                var form = $(this);
+
+                if (form.valid()) {
+
+                    var formData = new FormData(form[0]);
+                    var inputId = $(this).find('input[type = "file"]').prop('id');
+
+                    var files = document.getElementById(inputId).files;
+
+                    formData.append("file", files[0]);
+
+                    $.ajax({
+                        url: '@Url.Action("addcontract")',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        success: function (schemeid) {
+
+                            contractDataTable.ajax.reload();
+
+                            $("#ContractNo").val("");
+                            $("#CardType").val("");
+                            $("#Scheme").val("");
+                            $("#PolicyNo").val("");
+                            $("#Network").val("");
+                            $("#" + inputId).val("");
+                            $("#" + inputId).next(".custom-file-label")
+                                .html("Choose file");
+
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'File uploaded',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                toast: true
+                            })
+
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                }
+            });
+
+            $("body").on("change", 'input[type="file"]', function () {
+
+                var inputId = $(this).prop("id");
+                var files = document.getElementById(inputId).files;
+                var filename = "Choose file";
+
+                if (files.length > 0) {
+                    filename = files[0].name;
+                }
+
+                $(this).next(".custom-file-label")
+                    .html(filename);
+
+            });
+        });
+
+    </script>
+}
